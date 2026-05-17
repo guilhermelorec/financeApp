@@ -1,0 +1,23 @@
+# Build
+bin/
+out/
+target/
+*.class
+
+# IDEs
+.idea/
+.vscode/
+.settings/
+.classpath
+.project
+*.iml
+
+# Dependencias (jars baixados manualmente)
+lib/*.jar
+
+# Relatorios gerados em runtime
+relatorio_financeapp.html
+
+# OS
+Thumbs.db
+.DS_Store
