@@ -18,6 +18,9 @@ lib/*.jar
 # Relatorios gerados em runtime
 relatorio_financeapp.html
 
+# Credenciais (NUNCA commitar)
+config.properties
+
 # OS
 Thumbs.db
 .DS_Store

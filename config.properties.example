@@ -1,0 +1,26 @@
+# =====================================================================
+# FinanceApp - Exemplo de configuracao do banco (Supabase / PostgreSQL)
+# =====================================================================
+# Copie este arquivo para "config.properties" e preencha com os valores
+# reais do seu projeto Supabase. O arquivo "config.properties" NAO deve
+# ser commitado (ja esta no .gitignore).
+#
+# Onde achar os valores no Supabase:
+#   Painel do projeto > Project Settings > Database > Connection string
+#   (escolha a aba "JDBC" e prefira o "Session pooler" - porta 5432)
+# =====================================================================
+
+# Host do pooler (ex.: aws-0-sa-east-1.pooler.supabase.com)
+db.host=SEU_HOST.pooler.supabase.com
+
+# 5432 = Session pooler (recomendado) | 6543 = Transaction pooler
+db.porta=5432
+
+# Nome do banco (Supabase ja vem com "postgres")
+db.database=postgres
+
+# Usuario do pooler: postgres.<PROJECT_REF>
+db.usuario=postgres.SEU_PROJECT_REF
+
+# Senha do banco definida na criacao do projeto
+db.senha=SUA_SENHA
