@@ -30,12 +30,6 @@ public final class InputUtil {
         }
     }
 
-    public static String lerTextoOpcional(String prompt) {
-        System.out.print(prompt);
-        String linha = SCANNER.nextLine();
-        return linha == null ? "" : linha.trim();
-    }
-
     public static int lerInteiro(String prompt) {
         while (true) {
             System.out.print(prompt);

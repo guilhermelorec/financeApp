@@ -26,10 +26,6 @@ public class MovimentoService {
         return tipoMovimentoDAO.listarTodos();
     }
 
-    public TipoMovimento buscarTipoPorId(int id) throws SQLException {
-        return tipoMovimentoDAO.buscarPorId(id);
-    }
-
     private void validar(Movimento m) {
         if (m == null) {
             throw new IllegalArgumentException("Movimento nao pode ser nulo.");

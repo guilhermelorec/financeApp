@@ -10,15 +10,6 @@ public class TipoMovimento {
     private String descricao;
     private char natureza; // 'D' = Despesa, 'R' = Receita
 
-    public TipoMovimento() {
-    }
-
-    public TipoMovimento(int id, String descricao, char natureza) {
-        this.id = id;
-        this.descricao = descricao;
-        this.natureza = natureza;
-    }
-
     public int getId() {
         return id;
     }

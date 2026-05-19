@@ -87,9 +87,9 @@ public class MovimentoDAO {
         String natureza = rs.getString("tipo_natureza");
         tipo.setNatureza(natureza == null || natureza.isEmpty() ? 'D' : natureza.charAt(0));
 
-        FormaPagamento forma = new FormaPagamento();
-        forma.setTipo(FormaPagamentoEnum.fromString(rs.getString("forma_pagamento")));
-        forma.setBanco(rs.getString("banco"));
+        FormaPagamento forma = new FormaPagamento(
+                FormaPagamentoEnum.fromString(rs.getString("forma_pagamento")),
+                rs.getString("banco"));
 
         Movimento m = new Movimento();
         m.setId(rs.getInt("id"));
