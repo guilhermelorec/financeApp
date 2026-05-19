@@ -27,9 +27,17 @@ public final class ConnectionFactory {
     }
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                DatabaseConfig.URL,
-                DatabaseConfig.USUARIO,
-                DatabaseConfig.SENHA);
+        try {
+            return DriverManager.getConnection(
+                    DatabaseConfig.URL,
+                    DatabaseConfig.USUARIO,
+                    DatabaseConfig.SENHA);
+        } catch (SQLException e) {
+            // Reempacota com mais contexto para facilitar diagnostico
+            throw new SQLException(
+                    "Falha ao conectar em " + DatabaseConfig.URL
+                  + " com usuario '" + DatabaseConfig.USUARIO + "'. "
+                  + "Detalhe: " + e.getMessage(), e);
+        }
     }
 }
