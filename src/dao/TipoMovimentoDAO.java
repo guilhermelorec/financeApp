@@ -18,7 +18,7 @@ public class TipoMovimentoDAO {
         // ArrayList - requisito do trabalho
         List<TipoMovimento> tipos = new ArrayList<>();
 
-        String sql = "SELECT id, descricao, natureza FROM tipo_movimento ORDER BY descricao";
+        String sql = "SELECT id, descricao, natureza FROM tipo_movimento ORDER BY id";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
