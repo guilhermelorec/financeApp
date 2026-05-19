@@ -2,20 +2,25 @@ package model.enums;
 
 /**
  * Formas de pagamento aceitas pelo sistema.
- * CARTAO e PIX exigem informacao complementar do banco.
+ *
+ * - CARTAO e PIX exigem informacao complementar do banco.
+ * - Apenas CARTAO permite parcelamento e tem data de vencimento futura
+ *   (Pix e Dinheiro sao a vista, parcela = 1 e vencimento = data do movimento).
  */
 public enum FormaPagamentoEnum {
 
-    DINHEIRO("Dinheiro", false),
-    CARTAO  ("Cartao",   true),
-    PIX     ("Pix",      true);
+    DINHEIRO("Dinheiro", false, false),
+    CARTAO  ("Cartao",   true,  true),
+    PIX     ("Pix",      true,  false);
 
     private final String descricao;
     private final boolean exigeBanco;
+    private final boolean permiteParcelamento;
 
-    FormaPagamentoEnum(String descricao, boolean exigeBanco) {
+    FormaPagamentoEnum(String descricao, boolean exigeBanco, boolean permiteParcelamento) {
         this.descricao = descricao;
         this.exigeBanco = exigeBanco;
+        this.permiteParcelamento = permiteParcelamento;
     }
 
     public String getDescricao() {
@@ -24,6 +29,10 @@ public enum FormaPagamentoEnum {
 
     public boolean isExigeBanco() {
         return exigeBanco;
+    }
+
+    public boolean isPermiteParcelamento() {
+        return permiteParcelamento;
     }
 
     /**

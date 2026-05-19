@@ -37,9 +37,22 @@ public class CadastroMovimentoView {
             BigDecimal valor = InputUtil.lerDecimal("Valor (R$): ");
 
             FormaPagamento forma = escolherFormaPagamento();
-            int parcelas = InputUtil.lerInteiro("Quantidade de parcelas: ");
-            LocalDate dataVenc = InputUtil.lerData("Data de vencimento");
-            boolean debitado = InputUtil.lerSimNao("Lancamento ja foi debitado?");
+
+            int parcelas;
+            LocalDate dataVenc;
+            boolean debitado;
+
+            if (forma.getTipo().isPermiteParcelamento()) {
+                // Cartao - pergunta parcelas, vencimento e status
+                parcelas = InputUtil.lerInteiro("Quantidade de parcelas: ");
+                dataVenc = InputUtil.lerData("Data de vencimento");
+                debitado = InputUtil.lerSimNao("Lancamento ja foi debitado?");
+            } else {
+                // Dinheiro / Pix - pagamento a vista, ja debitado
+                parcelas = 1;
+                dataVenc = dataMov;
+                debitado = true;
+            }
 
             Movimento m = new Movimento();
             m.setDataMovimento(dataMov);
