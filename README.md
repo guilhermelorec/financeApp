@@ -11,11 +11,89 @@ Trabalho desenvolvido para a disciplina (AV2).
 | Lancamento com data, tipo, descricao, valor, forma de pagamento, parcelas, vencimento e status (debitado?) | `model/Movimento.java` + `sql/script.sql` |
 | Tipos de movimento em outra tabela | `tipo_movimento` (`sql/script.sql`) + `model/TipoMovimento.java` |
 | Formas de pagamento: dinheiro, cartao, pix (com banco para cartao/pix) | `model/enums/FormaPagamentoEnum.java` + `model/FormaPagamento.java` |
+| CRUD completo (cadastrar, editar, excluir, listar) | `view/CadastroMovimentoView.java`, `view/EdicaoMovimentoView.java`, `service/MovimentoService.java`, `dao/MovimentoDAO.java` |
 | Relatorio em tela e PDF por periodo | `view/RelatorioView.java` + `util/PDFGenerator.java` |
 | **Expressao lambda** | `service/RelatorioService.java` (filtros e somas com Stream) |
 | **Enum** | `FormaPagamentoEnum`, `StatusDebito` |
 | **ArrayList** | `dao/MovimentoDAO.java`, `dao/TipoMovimentoDAO.java` |
 | **Value Object** | `dto/PeriodoRelatorioVO.java` (imutavel, com equals/hashCode) |
+
+## Arquitetura e fluxo
+
+### Camadas
+
+```mermaid
+flowchart LR
+    User[Usuario]
+    subgraph App[FinanceApp - Java]
+        View[view/<br/>MenuPrincipal,<br/>Cadastro/Edicao/<br/>RelatorioView]
+        Service[service/<br/>MovimentoService<br/>RelatorioService]
+        DAO[dao/<br/>MovimentoDAO<br/>TipoMovimentoDAO]
+        Util[util/<br/>InputUtil<br/>PDFGenerator<br/>DatabaseConfig]
+    end
+    DB[(Supabase<br/>PostgreSQL)]
+    PDF[relatorio_financeapp.html]
+
+    User --> View
+    View --> Service
+    Service --> DAO
+    DAO --> DB
+    View --> Util
+    Util --> PDF
+```
+
+### Fluxo do menu principal
+
+```mermaid
+flowchart TD
+    Start([Inicio]) --> Menu{Menu Principal}
+    Menu -->|1| Cad[Cadastrar movimento]
+    Menu -->|2| Rel[Relatorio por periodo]
+    Menu -->|3| Edt[Editar movimento]
+    Menu -->|4| Exc[Excluir movimento]
+    Menu -->|0| End([Sair])
+
+    Cad --> Menu
+    Rel --> Menu
+    Edt --> Menu
+    Exc --> Menu
+```
+
+### Fluxo de cadastro/edicao de movimento
+
+```mermaid
+flowchart TD
+    A[Inicio] --> B[Ler data do movimento]
+    B --> C{Natureza?}
+    C -->|1 Despesa| D[Lista tipos de Despesa]
+    C -->|2 Receita| E[Lista tipos de Receita]
+    D --> F[Escolher tipo por ID]
+    E --> F
+    F --> G[Ler descricao e valor]
+    G --> H{Forma de<br/>pagamento}
+    H -->|Cartao| I[Pede banco, parcelas,<br/>vencimento e status]
+    H -->|Pix| J[Pede banco<br/>a vista, parcela=1]
+    H -->|Dinheiro| K[a vista, parcela=1<br/>debitado]
+    I --> L[Service.validar]
+    J --> L
+    K --> L
+    L --> M[DAO.inserir / DAO.atualizar]
+    M --> N([Fim])
+```
+
+### Fluxo de exclusao
+
+```mermaid
+flowchart TD
+    A[Informar ID] --> B[Buscar no DAO]
+    B --> C{Encontrou?}
+    C -->|Nao| Z([Mensagem: nao encontrado])
+    C -->|Sim| D[Exibir resumo do movimento]
+    D --> E{Confirma exclusao?}
+    E -->|Nao| Y([Operacao cancelada])
+    E -->|Sim| F[DAO.excluir id]
+    F --> X([Mensagem de sucesso])
+```
 
 ## Estrutura de pastas
 
@@ -23,7 +101,8 @@ Trabalho desenvolvido para a disciplina (AV2).
 financeApp/
 ├── lib/                       <- coloque aqui o postgresql-XX.X.X.jar
 ├── sql/
-│   └── script.sql             <- schema (rode no SQL Editor do Supabase)
+│   ├── script.sql             <- schema (rode no SQL Editor do Supabase)
+│   └── migrations/            <- scripts incrementais para bancos ja criados
 ├── src/
 │   ├── app/Main.java          <- ponto de entrada
 │   ├── dao/                   <- acesso a dados (JDBC + PostgreSQL)
@@ -44,6 +123,10 @@ financeApp/
 4. Va em **SQL Editor > New query**, cole o conteudo de `sql/script.sql` e
    clique em **Run**. Isso cria as tabelas `tipo_movimento` e `movimento` e ja
    popula os tipos iniciais.
+
+> **Banco ja existente?** Se voce criou o banco em uma versao anterior do
+> projeto, rode tambem o script `sql/migrations/001_outros_split.sql` para
+> separar o tipo "Outros" em "Outras Despesas" e "Outras Receitas".
 
 ### Pegar a string de conexao JDBC
 
@@ -83,6 +166,15 @@ Copie o arquivo (ex.: `postgresql-42.7.4.jar`) para a pasta `lib/`.
 
 ## 3. Compilar e executar pelo terminal (Windows)
 
+Atalho via PowerShell (recomendado):
+
+```powershell
+.\build.ps1     # compila para a pasta bin/
+.\run.ps1       # executa app.Main
+```
+
+Ou manualmente via cmd:
+
 ```cmd
 mkdir bin
 javac -d bin -cp "lib/*" src/app/*.java src/dao/*.java src/dto/*.java src/model/*.java src/model/enums/*.java src/service/*.java src/util/*.java src/view/*.java
@@ -97,12 +189,30 @@ java -cp "bin;lib/*" app.Main
 
 ## Como usar
 
-1. **Cadastrar movimento** - preencha os campos solicitados. Para `Cartao` ou
-   `Pix` o sistema pede o nome do banco.
+Ao iniciar a aplicacao o seguinte menu e exibido:
+
+```
+1 - Cadastrar movimento
+2 - Relatorio por periodo
+3 - Editar movimento
+4 - Excluir movimento
+0 - Sair
+```
+
+1. **Cadastrar movimento** - primeiro escolha a **natureza** (1 - Despesa,
+   2 - Receita). Em seguida o sistema lista apenas os tipos daquela natureza.
+   Para `Cartao` ou `Pix` o sistema pede o nome do banco. Para `Cartao` tambem
+   pergunta parcelas, vencimento e se ja foi debitado.
 2. **Relatorio por periodo** - informe data inicial e final. O resultado aparece
    no console e voce pode gerar um arquivo HTML com layout de impressao
    (`relatorio_financeapp.html`) que abre no navegador. Use
    `Imprimir > Salvar como PDF` para gerar o PDF final.
+3. **Editar movimento** - informe o ID, confirme o registro exibido e
+   reinforme os campos. As mesmas validacoes do cadastro sao aplicadas.
+4. **Excluir movimento** - informe o ID, confirme o registro exibido e o
+   sistema remove o lancamento do banco.
+
+> Dica: o ID de cada movimento aparece na primeira coluna do relatorio.
 
 ## Onde estao os elementos exigidos
 
