@@ -5,13 +5,14 @@ import model.enums.FormaPagamentoEnum;
 /**
  * Forma de pagamento utilizada no movimento.
  * Quando o tipo for CARTAO ou PIX, o atributo "banco" e obrigatorio.
- *
- * Classe imutavel: o tipo e o banco sao definidos no construtor e nao mudam.
  */
 public class FormaPagamento {
 
-    private final FormaPagamentoEnum tipo;
-    private final String banco;
+    private FormaPagamentoEnum tipo;
+    private String banco;
+
+    public FormaPagamento() {
+    }
 
     public FormaPagamento(FormaPagamentoEnum tipo, String banco) {
         this.tipo = tipo;
@@ -22,8 +23,16 @@ public class FormaPagamento {
         return tipo;
     }
 
+    public void setTipo(FormaPagamentoEnum tipo) {
+        this.tipo = tipo;
+    }
+
     public String getBanco() {
         return banco;
+    }
+
+    public void setBanco(String banco) {
+        this.banco = banco;
     }
 
     /**

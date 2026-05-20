@@ -24,6 +24,25 @@ public class Movimento {
     private LocalDate dataVencimento;
     private StatusDebito status;
 
+    public Movimento() {
+    }
+
+    public Movimento(int id, LocalDate dataMovimento, TipoMovimento tipoMovimento,
+                     String descricao, BigDecimal valor, FormaPagamento formaPagamento,
+                     int quantidadeParcelas, LocalDate dataVencimento, StatusDebito status) {
+        this.id = id;
+        this.dataMovimento = dataMovimento;
+        this.tipoMovimento = tipoMovimento;
+        this.descricao = descricao;
+        this.valor = valor;
+        this.formaPagamento = formaPagamento;
+        this.quantidadeParcelas = quantidadeParcelas;
+        this.dataVencimento = dataVencimento;
+        this.status = status;
+    }
+
+    // Getters e setters
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

@@ -59,4 +59,5 @@ INSERT INTO tipo_movimento (descricao, natureza) VALUES
     ('Combustivel',       'D'),
     ('Salario',           'R'),
     ('Freelance',         'R'),
-    ('Outros',            'D');
+    ('Outras Despesas',   'D'),
+    ('Outras Receitas',   'R');

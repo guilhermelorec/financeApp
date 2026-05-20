@@ -22,8 +22,38 @@ public class MovimentoService {
         return movimentoDAO.inserir(m);
     }
 
+    public boolean atualizar(Movimento m) throws SQLException {
+        if (m.getId() <= 0) {
+            throw new IllegalArgumentException("ID do movimento e obrigatorio para atualizacao.");
+        }
+        validar(m);
+        return movimentoDAO.atualizar(m);
+    }
+
+    public boolean excluir(int id) throws SQLException {
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID invalido.");
+        }
+        return movimentoDAO.excluir(id);
+    }
+
+    public Movimento buscarPorId(int id) throws SQLException {
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID invalido.");
+        }
+        return movimentoDAO.buscarPorId(id);
+    }
+
+    public List<Movimento> listarPorPeriodo(dto.PeriodoRelatorioVO periodo) throws SQLException {
+        return movimentoDAO.buscarPorPeriodo(periodo);
+    }
+
     public List<TipoMovimento> listarTipos() throws SQLException {
         return tipoMovimentoDAO.listarTodos();
+    }
+
+    public TipoMovimento buscarTipoPorId(int id) throws SQLException {
+        return tipoMovimentoDAO.buscarPorId(id);
     }
 
     private void validar(Movimento m) {

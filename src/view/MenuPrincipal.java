@@ -9,6 +9,7 @@ public class MenuPrincipal {
 
     private final CadastroMovimentoView cadastroView = new CadastroMovimentoView();
     private final RelatorioView         relatorioView = new RelatorioView();
+    private final EdicaoMovimentoView   edicaoView    = new EdicaoMovimentoView();
 
     public void exibir() {
         boolean continuar = true;
@@ -23,6 +24,12 @@ public class MenuPrincipal {
                     break;
                 case 2:
                     relatorioView.executar();
+                    break;
+                case 3:
+                    edicaoView.editar();
+                    break;
+                case 4:
+                    edicaoView.excluir();
                     break;
                 case 0:
                     continuar = false;
@@ -43,6 +50,8 @@ public class MenuPrincipal {
         System.out.println("===========================================");
         System.out.println(" 1 - Cadastrar movimento");
         System.out.println(" 2 - Relatorio por periodo");
+        System.out.println(" 3 - Editar movimento");
+        System.out.println(" 4 - Excluir movimento");
         System.out.println(" 0 - Sair");
         System.out.println("===========================================");
     }
