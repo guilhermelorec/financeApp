@@ -44,6 +44,18 @@ CREATE TABLE movimento (
 CREATE INDEX idx_movimento_data ON movimento (data_movimento);
 CREATE INDEX idx_movimento_venc ON movimento (data_vencimento);
 
+-- 1) Renomeia o tipo "Outros" (Despesa) para "Outras Despesas"
+UPDATE tipo_movimento
+    SET descricao = 'Outras Despesas'
+    WHERE descricao = 'Outros';
+
+-- 2) Cria a contraparte para Receita (se ainda nao existir)
+INSERT INTO tipo_movimento (descricao, natureza)
+SELECT 'Outras Receitas', 'R'
+    WHERE NOT EXISTS (
+    SELECT 1 FROM tipo_movimento WHERE descricao = 'Outras Receitas'
+);
+
 -- ---------------------------------------------------------------------
 -- Carga inicial de tipos de movimento
 -- ---------------------------------------------------------------------
