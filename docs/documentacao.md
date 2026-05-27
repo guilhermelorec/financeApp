@@ -8,7 +8,6 @@ Materiais de apoio: apresentacao, guias e perguntas/respostas para a banca.
 |---------|-----------|
 | [[apresentacao]] | Apresentacao em Markdown (Marp). Slides para a banca. |
 | `apresentacao.html` | Mesma apresentacao em HTML standalone. Abre no navegador, sem extensao. |
-| [[perguntas-e-respostas]] | Guia de estudo com perguntas que a banca pode fazer. |
 
 ## Mapa de navegacao
 
