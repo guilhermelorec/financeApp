@@ -4,6 +4,25 @@ Aplicativo desktop console (Java) para controle pessoal de **despesas e receitas
 Banco de dados: **PostgreSQL** hospedado no **Supabase**.
 Trabalho desenvolvido para a disciplina (AV2).
 
+## Mapa do projeto (para Obsidian)
+
+| Pasta | Conteudo |
+|-------|----------|
+| [[src/visao-geral\|src/]] | Codigo fonte Java |
+| [[src/app/main\|src/app/]] | Ponto de entrada `Main` |
+| [[src/view/telas-console\|src/view/]] | Telas do console |
+| [[src/service/regras-negocio\|src/service/]] | Regras de negocio (lambdas) |
+| [[src/dao/acesso-banco\|src/dao/]] | Acesso ao banco (JDBC) |
+| [[src/model/entidades\|src/model/]] | Entidades de dominio |
+| [[src/model/enums/enumeracoes\|src/model/enums/]] | Enumeracoes |
+| [[src/dto/value-objects\|src/dto/]] | Value Objects |
+| [[src/util/utilitarios\|src/util/]] | Utilitarios |
+| [[sql/scripts-sql\|sql/]] | Schema e migracoes |
+| [[sql/migrations/migracoes\|sql/migrations/]] | Scripts incrementais |
+| [[lib/bibliotecas\|lib/]] | Driver JDBC PostgreSQL |
+| [[bin/saida-compilacao\|bin/]] | Saida da compilacao |
+| [[docs/documentacao\|docs/]] | Apresentacao e perguntas/respostas |
+
 ## Requisitos atendidos
 
 | Requisito do enunciado | Onde esta no codigo |
