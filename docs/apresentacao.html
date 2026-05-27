@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>FinanceApp - Apresentacao</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --accent: #38bdf8;
+    --accent-2: #818cf8;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --code-bg: #0b1220;
+    --good: #34d399;
+    --warn: #fbbf24;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+  }
+
+  .deck {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 48px 72px 80px 72px;
+    display: none;
+    overflow: auto;
+    animation: fadeIn 0.25s ease;
+  }
+  .slide.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 {
+    font-size: 48px;
+    margin: 0 0 8px 0;
+    color: var(--accent);
+    letter-spacing: -1px;
+  }
+  h2 {
+    font-size: 32px;
+    margin: 0 0 24px 0;
+    color: var(--accent-2);
+    border-bottom: 2px solid var(--panel);
+    padding-bottom: 12px;
+  }
+  h3 {
+    font-size: 20px;
+    margin: 16px 0 8px 0;
+    color: var(--accent);
+  }
+  p, li { font-size: 20px; line-height: 1.55; }
+  ul { padding-left: 24px; }
+  li { margin-bottom: 6px; }
+
+  code {
+    background: var(--code-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #fcd34d;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 18px 22px;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent);
+    overflow-x: auto;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    color: var(--text);
+    font-size: inherit;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 12px;
+    font-size: 17px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid #334155;
+  }
+  th {
+    background: var(--panel);
+    color: var(--accent);
+  }
+  tr:hover td { background: #1e293b66; }
+
+  .lead {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .lead h1 {
+    font-size: 84px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+  }
+  .lead p {
+    font-size: 28px;
+    color: var(--muted);
+    margin: 4px 0;
+  }
+  .lead .badge {
+    margin-top: 32px;
+    display: inline-block;
+    padding: 8px 24px;
+    background: var(--panel);
+    border-radius: 24px;
+    color: var(--accent);
+    font-size: 18px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .card {
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 20px 24px;
+    border-left: 4px solid var(--accent);
+  }
+  .card h3 { margin-top: 0; }
+
+  .nav {
+    position: fixed;
+    bottom: 16px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+  }
+  .nav button {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid #334155;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .nav button:hover { background: #334155; }
+  .counter {
+    color: var(--muted);
+    font-size: 14px;
+    background: var(--panel);
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+
+  .progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width 0.25s ease;
+    z-index: 10;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 18px;
+    left: 24px;
+    color: var(--muted);
+    font-size: 13px;
+    z-index: 10;
+  }
+
+  .mermaid {
+    background: var(--panel);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    background: var(--panel);
+    color: var(--accent);
+    border-radius: 12px;
+    font-size: 13px;
+    margin-right: 6px;
+  }
+
+  /* Print -> single-page deck */
+  @media print {
+    .nav, .progress, .footer { display: none; }
+    .slide {
+      position: relative;
+      display: block !important;
+      page-break-after: always;
+      height: 100vh;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- 1 - Capa -->
+  <section class="slide active">
+    <div class="lead">
+      <h1>FinanceApp</h1>
+      <p>Controle pessoal de despesas e receitas</p>
+      <p style="font-size:20px">Java + PostgreSQL/Supabase &middot; Console</p>
+      <div class="badge">Trabalho AV2</div>
+    </div>
+  </section>
+
+  <!-- 2 - Agenda -->
+  <section class="slide">
+    <h2>Agenda</h2>
+    <ol>
+      <li>Objetivo do projeto</li>
+      <li>Funcionalidades</li>
+      <li>Arquitetura em camadas</li>
+      <li>Modelo de dados</li>
+      <li>Tecnologias</li>
+      <li>Requisitos atendidos (lambda, enum, ArrayList, VO)</li>
+      <li>Fluxos de uso (cadastro, edicao, exclusao)</li>
+      <li>Validacoes e tratamento de erros</li>
+      <li>Demo</li>
+      <li>Proximos passos &amp; perguntas</li>
+    </ol>
+  </section>
+
+  <!-- 3 - Objetivo -->
+  <section class="slide">
+    <h2>1. Objetivo</h2>
+    <p>Permitir que o usuario controle seus lancamentos pelo terminal:</p>
+    <ul>
+      <li>Cadastrar <strong>despesas</strong> e <strong>receitas</strong></li>
+      <li>Editar e excluir lancamentos por ID</li>
+      <li>Consultar relatorios por periodo</li>
+      <li>Gerar relatorio em <strong>PDF</strong> (HTML imprimivel)</li>
+      <li>Persistir tudo em <strong>PostgreSQL</strong> hospedado no <strong>Supabase</strong></li>
+    </ul>
+    <p style="margin-top:24px;color:var(--muted)">
+      Foco: simplicidade, didatica e atender requisitos da disciplina
+      (lambda, enum, ArrayList, Value Object).
+    </p>
+  </section>
+
+  <!-- 4 - Funcionalidades -->
+  <section class="slide">
+    <h2>2. Funcionalidades</h2>
+    <table>
+      <thead><tr><th>Opcao</th><th>Descricao</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Cadastrar movimento (escolha de natureza + tipo)</td></tr>
+        <tr><td>2</td><td>Relatorio por periodo (console + HTML/PDF)</td></tr>
+        <tr><td>3</td><td>Editar movimento (por ID)</td></tr>
+        <tr><td>4</td><td>Excluir movimento (por ID)</td></tr>
+        <tr><td>0</td><td>Sair</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:18px">
+      Formas de pagamento: <span class="tag">Dinheiro</span>
+      <span class="tag">Cartao + banco + parcelas</span>
+      <span class="tag">Pix + banco</span>
+    </p>
+  </section>
+
+  <!-- 5 - Arquitetura -->
+  <section class="slide">
+    <h2>3. Arquitetura em camadas</h2>
+    <div class="mermaid">
+flowchart LR
+    User[Usuario]
+    View[View]
+    Service[Service]
+    DAO[DAO]
+    DB[(Banco)]
+    Util[Util]
+    User --> View
+    View --> Service
+    Service --> DAO
+    DAO --> DB
+    View --> Util
+    </div>
+    <p style="margin-top:14px;color:var(--muted)">
+      Separacao de responsabilidades: trocar UI ou banco nao afeta as regras de negocio.
+    </p>
+  </section>
+
+  <!-- 6 - Modelo de dados -->
+  <section class="slide">
+    <h2>4. Modelo de dados</h2>
+    <div class="mermaid">
+erDiagram
+    TIPO_MOVIMENTO ||--o{ MOVIMENTO : possui
+    TIPO_MOVIMENTO {
+        int id
+        string descricao
+        string natureza
+    }
+    MOVIMENTO {
+        int id
+        date data_movimento
+        int tipo_movimento_id
+        string descricao
+        string valor
+        string forma_pagamento
+        string banco
+        int quantidade_parcelas
+        date data_vencimento
+        string debitado
+    }
+    </div>
+  </section>
+
+  <!-- 7 - Tecnologias -->
+  <section class="slide">
+    <h2>5. Tecnologias</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Linguagem &amp; build</h3>
+        <ul>
+          <li>Java 21 (compativel 17+)</li>
+          <li>Sem frameworks externos</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Banco de dados</h3>
+        <ul>
+          <li>PostgreSQL no Supabase</li>
+          <li>JDBC + driver <code>postgresql-42.7.4</code></li>
+          <li>Pooler do Supabase (porta 5432)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Persistencia</h3>
+        <ul>
+          <li><code>PreparedStatement</code> em todo lugar</li>
+          <li><code>try-with-resources</code> para fechar conexoes</li>
+          <li>SSL (<code>sslmode=require</code>)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Documentacao</h3>
+        <ul>
+          <li>Markdown + Mermaid</li>
+          <li>Apresentacao HTML auto contida (este arquivo)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 - Requisitos -->
+  <section class="slide">
+    <h2>6. Requisitos atendidos</h2>
+    <table>
+      <thead><tr><th>Requisito</th><th>Onde aparece</th></tr></thead>
+      <tbody>
+        <tr><td>Lambda</td><td><code>RelatorioService</code> (Stream + filter/reduce/count)</td></tr>
+        <tr><td>Enum</td><td><code>FormaPagamentoEnum</code>, <code>StatusDebito</code></td></tr>
+        <tr><td>ArrayList</td><td><code>MovimentoDAO.buscarPorPeriodo</code>, <code>TipoMovimentoDAO.listarTodos</code></td></tr>
+        <tr><td>Value Object</td><td><code>PeriodoRelatorioVO</code> (final, equals/hashCode por valor)</td></tr>
+        <tr><td>Tabela de tipos separada</td><td><code>tipo_movimento</code></td></tr>
+        <tr><td>Forma pagto. com banco para Cartao/Pix</td><td><code>FormaPagamento</code> + enum</td></tr>
+        <tr><td>Relatorio por periodo (tela + PDF)</td><td><code>RelatorioView</code> + <code>PDFGenerator</code></td></tr>
+        <tr><td>CRUD completo</td><td><code>EdicaoMovimentoView</code>, <code>MovimentoService</code>, <code>MovimentoDAO</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 9 - Lambda -->
+  <section class="slide">
+    <h2>6.1 Exemplo de Lambda</h2>
+    <pre><code>public BigDecimal totalDespesas(List&lt;Movimento&gt; movimentos) {
+    return movimentos.stream()
+            .filter(m -&gt; m.getTipoMovimento().isDespesa()) // &lt;-- LAMBDA
+            .map(Movimento::getValor)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+}
+
+public long totalPendentes(List&lt;Movimento&gt; movimentos) {
+    return movimentos.stream()
+            .filter(m -&gt; !m.isDebitado()) // &lt;-- LAMBDA
+            .count();
+}</code></pre>
+    <p>Filtragem, mapeamento e reducao via Stream API, sem <code>for</code> manual.</p>
+  </section>
+
+  <!-- 10 - Enum -->
+  <section class="slide">
+    <h2>6.2 Exemplo de Enum com comportamento</h2>
+    <pre><code>public enum FormaPagamentoEnum {
+    DINHEIRO("Dinheiro", false, false),
+    CARTAO  ("Cartao",   true,  true),
+    PIX     ("Pix",      true,  false);
+
+    private final String  descricao;
+    private final boolean exigeBanco;
+    private final boolean permiteParcelamento;
+    // construtor + getters...
+}</code></pre>
+    <p>
+      Cada constante carrega seu proprio comportamento.
+      Evita <code>if</code>/<code>switch</code> espalhados pelo codigo.
+    </p>
+  </section>
+
+  <!-- 11 - Value Object -->
+  <section class="slide">
+    <h2>6.3 Value Object: PeriodoRelatorioVO</h2>
+    <pre><code>public final class PeriodoRelatorioVO {
+    private final LocalDate dataInicial;
+    private final LocalDate dataFinal;
+
+    public PeriodoRelatorioVO(LocalDate ini, LocalDate fim) {
+        if (ini == null || fim == null)
+            throw new IllegalArgumentException("Datas obrigatorias.");
+        if (ini.isAfter(fim))
+            throw new IllegalArgumentException("Inicial &gt; final.");
+        this.dataInicial = ini;
+        this.dataFinal   = fim;
+    }
+    // getters, equals, hashCode...
+}</code></pre>
+    <p><span class="tag">final</span> <span class="tag">imutavel</span> <span class="tag">equals/hashCode por valor</span></p>
+  </section>
+
+  <!-- 12 - Fluxo de cadastro -->
+  <section class="slide">
+    <h2>7. Fluxo de cadastro/edicao</h2>
+    <div class="mermaid">
+flowchart TD
+    A[Data do movimento] --> B{Natureza}
+    B -->|Despesa| C[Tipos de Despesa]
+    B -->|Receita| D[Tipos de Receita]
+    C --> E[Escolher tipo por ID]
+    D --> E
+    E --> F[Descricao e Valor]
+    F --> G{Forma de pagamento}
+    G -->|Cartao| H[Banco e parcelas e vencimento]
+    G -->|Pix| I[Banco a vista]
+    G -->|Dinheiro| J[A vista]
+    H --> K[Service validar]
+    I --> K
+    J --> K
+    K --> L[DAO inserir ou atualizar]
+    L --> M[OK]
+    </div>
+  </section>
+
+  <!-- 13 - Fluxo de exclusao -->
+  <section class="slide">
+    <h2>7.1 Fluxo de exclusao</h2>
+    <div class="mermaid">
+flowchart TD
+    A[Informar ID] --> B[DAO buscarPorId]
+    B --> C{Encontrou}
+    C -->|Nao| Z[Mensagem nao encontrado]
+    C -->|Sim| D[Exibir resumo do movimento]
+    D --> E{Confirma}
+    E -->|Nao| Y[Cancelado]
+    E -->|Sim| F[DAO excluir id]
+    F --> X[Excluido com sucesso]
+    </div>
+    <p style="color:var(--muted)">
+      Confirmacao explicita evita exclusoes acidentais.
+    </p>
+  </section>
+
+  <!-- 14 - Validacoes -->
+  <section class="slide">
+    <h2>8. Validacoes &amp; tratamento de erros</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>No service</h3>
+        <ul>
+          <li>Valor &gt; 0</li>
+          <li>Descricao obrigatoria</li>
+          <li>Banco obrigatorio para Cartao/Pix</li>
+          <li>Parcelas &gt;= 1</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Na entrada (InputUtil)</h3>
+        <ul>
+          <li>Repete prompt ate o tipo ser valido</li>
+          <li>Datas em <code>dd/MM/yyyy</code></li>
+          <li>Decimais com virgula ou ponto</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Banco</h3>
+        <ul>
+          <li><code>PreparedStatement</code> previne SQL Injection</li>
+          <li><code>try-with-resources</code> evita vazamento de conexao</li>
+          <li>Erros reembalados com URL/usuario para diagnostico</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>UX</h3>
+        <ul>
+          <li>Mensagens prefixadas com <code>&gt;&gt;</code></li>
+          <li>Confirmacao em operacoes destrutivas</li>
+          <li>Resumo do registro antes de editar/excluir</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 - Demo cadastro -->
+  <section class="slide">
+    <h2>9. Demo - Cadastro</h2>
+    <pre><code>====== Cadastro de Movimento ======
+Data do movimento (dd/MM/yyyy): 25/05/2026
+
+Natureza do movimento:
+  1 - Despesa
+  2 - Receita
+Escolha: 1
+
+Tipos de Despesa:
+  3 - Energia Eletrica (Despesa)
+  7 - Internet (Despesa)
+  ...
+Informe o ID do tipo: 7
+Descricao: Plano fibra
+Valor (R$): 99.90
+Formas de pagamento: 1-Dinheiro 2-Cartao 3-Pix
+Escolha: 2
+Banco: Itau
+Quantidade de parcelas: 1
+...
+&gt;&gt; Movimento cadastrado com sucesso! ID = 42</code></pre>
+  </section>
+
+  <!-- 16 - Demo relatorio -->
+  <section class="slide">
+    <h2>9.1 Demo - Relatorio</h2>
+    <pre><code>====== Relatorio de Movimentos ======
+Data inicial (dd/MM/yyyy): 01/05/2026
+Data final   (dd/MM/yyyy): 31/05/2026
+
+ID  Data       Tipo                Descricao        Valor   Forma         ...
+42  25/05/2026 Internet            Plano fibra      99.90   Cartao (Itau) ...
+...
+
+Total de Receitas: R$ 4500.00
+Total de Despesas: R$ 1320.40
+Saldo do periodo:  R$ 3179.60
+Lancamentos pendentes (nao debitados): 2
+
+Deseja gerar o relatorio em PDF? (S/N): S
+&gt;&gt; Relatorio gerado em: relatorio_financeapp.html</code></pre>
+  </section>
+
+  <!-- 17 - Estrutura -->
+  <section class="slide">
+    <h2>Estrutura do projeto</h2>
+    <pre><code>financeApp/
+&#9500;&#9472;&#9472; lib/                     postgresql-42.7.4.jar
+&#9500;&#9472;&#9472; sql/
+&#9474;   &#9500;&#9472;&#9472; script.sql           schema completo
+&#9474;   &#9492;&#9472;&#9472; migrations/          alteracoes incrementais
+&#9500;&#9472;&#9472; src/
+&#9474;   &#9500;&#9472;&#9472; app/Main.java        ponto de entrada
+&#9474;   &#9500;&#9472;&#9472; dao/                 JDBC + PostgreSQL
+&#9474;   &#9500;&#9472;&#9472; dto/                 Value Objects
+&#9474;   &#9500;&#9472;&#9472; model/               entidades + enums
+&#9474;   &#9500;&#9472;&#9472; service/             regras + lambdas
+&#9474;   &#9500;&#9472;&#9472; util/                helpers
+&#9474;   &#9492;&#9472;&#9472; view/                console UI
+&#9492;&#9472;&#9472; README.md</code></pre>
+  </section>
+
+  <!-- 18 - Encerramento -->
+  <section class="slide">
+    <div class="lead">
+      <h1>Obrigado!</h1>
+      <p>Repositorio: <code>financeApp/</code></p>
+      <p>Documentacao: <code>README.md</code> &middot; <code>docs/</code></p>
+    </div>
+  </section>
+
+</div>
+
+<div class="progress" id="progress"></div>
+<div class="footer">FinanceApp &middot; AV2 &middot; use &larr; &rarr; para navegar</div>
+<div class="nav">
+  <button onclick="prev()">&larr; Anterior</button>
+  <span class="counter" id="counter">1 / 1</span>
+  <button onclick="next()">Proximo &rarr;</button>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'dark',
+    securityLevel: 'loose',
+    themeVariables: {
+      primaryColor: '#1e293b',
+      primaryTextColor: '#e2e8f0',
+      primaryBorderColor: '#38bdf8',
+      lineColor: '#94a3b8',
+      tertiaryColor: '#0b1220'
+    }
+  });
+
+  // Salva o codigo original de cada bloco mermaid antes de renderizar
+  const mermaidBlocks = document.querySelectorAll('.mermaid');
+  mermaidBlocks.forEach((el, idx) => {
+    el.setAttribute('data-source', el.textContent.trim());
+    el.setAttribute('data-mid', 'm' + idx);
+  });
+
+  async function renderMermaidIn(slide) {
+    const blocks = slide.querySelectorAll('.mermaid');
+    for (const el of blocks) {
+      if (el.dataset.rendered === 'true') continue;
+      try {
+        const src = el.getAttribute('data-source');
+        const id  = el.getAttribute('data-mid');
+        const { svg } = await mermaid.render(id + '-svg', src);
+        el.innerHTML = svg;
+        el.dataset.rendered = 'true';
+      } catch (err) {
+        el.innerHTML = '<pre style="color:#f87171;text-align:left;font-size:13px">'
+          + 'Erro Mermaid: ' + (err && err.message ? err.message : err) + '</pre>';
+      }
+    }
+  }
+
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  async function show(i) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides[current].classList.add('active');
+    slides[current].scrollTop = 0;
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + slides.length;
+    document.getElementById('progress').style.width = ((current + 1) / slides.length * 100) + '%';
+    await renderMermaidIn(slides[current]);
+  }
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft'  || e.key === 'PageUp')                    { e.preventDefault(); prev(); }
+    if (e.key === 'Home')                                                { show(0); }
+    if (e.key === 'End')                                                 { show(slides.length - 1); }
+  });
+
+  show(0);
+</script>
+
+</body>
+</html>

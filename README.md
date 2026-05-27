@@ -24,35 +24,24 @@ Trabalho desenvolvido para a disciplina (AV2).
 
 ```mermaid
 flowchart LR
-    User[Usuario]
-    subgraph App[FinanceApp - Java]
-        View[view/<br/>MenuPrincipal,<br/>Cadastro/Edicao/<br/>RelatorioView]
-        Service[service/<br/>MovimentoService<br/>RelatorioService]
-        DAO[dao/<br/>MovimentoDAO<br/>TipoMovimentoDAO]
-        Util[util/<br/>InputUtil<br/>PDFGenerator<br/>DatabaseConfig]
-    end
-    DB[(Supabase<br/>PostgreSQL)]
-    PDF[relatorio_financeapp.html]
-
-    User --> View
-    View --> Service
-    Service --> DAO
-    DAO --> DB
-    View --> Util
-    Util --> PDF
+    User[Usuario] --> View["view (Menu, Cadastro, Edicao, Relatorio)"]
+    View --> Service["service (MovimentoService, RelatorioService)"]
+    Service --> DAO["dao (MovimentoDAO, TipoMovimentoDAO)"]
+    DAO --> DB[(Supabase PostgreSQL)]
+    View --> Util["util (InputUtil, PDFGenerator, DatabaseConfig)"]
+    Util --> PDF[relatorio_financeapp.html]
 ```
 
 ### Fluxo do menu principal
 
 ```mermaid
 flowchart TD
-    Start([Inicio]) --> Menu{Menu Principal}
+    Inicio([Inicio]) --> Menu{Menu Principal}
     Menu -->|1| Cad[Cadastrar movimento]
     Menu -->|2| Rel[Relatorio por periodo]
     Menu -->|3| Edt[Editar movimento]
     Menu -->|4| Exc[Excluir movimento]
-    Menu -->|0| End([Sair])
-
+    Menu -->|0| Fim([Sair])
     Cad --> Menu
     Rel --> Menu
     Edt --> Menu
@@ -63,21 +52,21 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Inicio] --> B[Ler data do movimento]
+    A([Inicio]) --> B[Ler data do movimento]
     B --> C{Natureza?}
-    C -->|1 Despesa| D[Lista tipos de Despesa]
-    C -->|2 Receita| E[Lista tipos de Receita]
+    C -->|Despesa| D[Lista tipos de Despesa]
+    C -->|Receita| E[Lista tipos de Receita]
     D --> F[Escolher tipo por ID]
     E --> F
     F --> G[Ler descricao e valor]
-    G --> H{Forma de<br/>pagamento}
-    H -->|Cartao| I[Pede banco, parcelas,<br/>vencimento e status]
-    H -->|Pix| J[Pede banco<br/>a vista, parcela=1]
-    H -->|Dinheiro| K[a vista, parcela=1<br/>debitado]
+    G --> H{Forma de pagamento}
+    H -->|Cartao| I["Banco, parcelas, vencimento, status"]
+    H -->|Pix| J[Banco - a vista]
+    H -->|Dinheiro| K[A vista]
     I --> L[Service.validar]
     J --> L
     K --> L
-    L --> M[DAO.inserir / DAO.atualizar]
+    L --> M[DAO.inserir ou atualizar]
     M --> N([Fim])
 ```
 

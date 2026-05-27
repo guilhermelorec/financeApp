@@ -8,7 +8,7 @@ import util.DatabaseConfig;
 
 /**
  * Fabrica de conexoes JDBC. Centraliza a abertura de conexao com o
- * PostgreSQL (Supabase).
+ * PostgreSQL (Supabase). todos os DAOs usam ele.
  */
 public final class ConnectionFactory {
 
@@ -17,8 +17,8 @@ public final class ConnectionFactory {
             Class.forName(DatabaseConfig.DRIVER);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(
-                    "Driver JDBC do PostgreSQL nao encontrado. "
-                  + "Adicione o postgresql-XX.X.X.jar ao classpath (pasta lib/).", e);
+                "Driver JDBC do PostgreSQL nao encontrado. "
+                + "Adicione o postgresql-XX.X.X.jar ao classpath (pasta lib/).", e);
         }
     }
 
@@ -36,8 +36,8 @@ public final class ConnectionFactory {
             // Reempacota com mais contexto para facilitar diagnostico
             throw new SQLException(
                     "Falha ao conectar em " + DatabaseConfig.URL
-                  + " com usuario '" + DatabaseConfig.USUARIO + "'. "
-                  + "Detalhe: " + e.getMessage(), e);
+                + " com usuario '" + DatabaseConfig.USUARIO + "'. "
+                + "Detalhe: " + e.getMessage(), e);
         }
     }
 }

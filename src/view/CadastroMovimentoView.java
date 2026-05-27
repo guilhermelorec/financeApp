@@ -108,7 +108,7 @@ public class CadastroMovimentoView {
 
         System.out.println();
         System.out.println("Tipos de " + (despesa ? "Despesa" : "Receita") + ":");
-        filtrados.forEach(t -> System.out.println("  " + t)); // <-- LAMBDA
+        filtrados.forEach(t -> System.out.println("  " + t.getId() + " - " + t.getDescricao())); // <-- LAMBDA
 
         int idEscolhido = InputUtil.lerInteiro("Informe o ID do tipo: ");
         return filtrados.stream()

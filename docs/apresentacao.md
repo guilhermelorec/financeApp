@@ -72,17 +72,11 @@ Formas de pagamento suportadas: **Dinheiro**, **Cartao** (com banco e parcelamen
 
 ```mermaid
 flowchart LR
-    User[Usuario]
-    subgraph App[FinanceApp - Java]
-        View[view]
-        Service[service]
-        DAO[dao]
-        Util[util]
-    end
-    DB[(Supabase<br/>PostgreSQL)]
-
-    User --> View --> Service --> DAO --> DB
-    View --> Util
+    User[Usuario] --> View[view]
+    View --> Service[service]
+    Service --> DAO[dao]
+    DAO --> DB[(Supabase PostgreSQL)]
+    View --> Util[util]
 ```
 
 - **view**: interacao com o console (`MenuPrincipal`, `Cadastro/Edicao/Relatorio`)
@@ -98,21 +92,21 @@ flowchart LR
 erDiagram
     TIPO_MOVIMENTO ||--o{ MOVIMENTO : possui
     TIPO_MOVIMENTO {
-        int    id PK
+        int id PK
         string descricao
-        char   natureza "D ou R"
+        string natureza
     }
     MOVIMENTO {
-        int      id PK
-        date     data_movimento
-        int      tipo_movimento_id FK
-        string   descricao
-        decimal  valor
-        string   forma_pagamento "DINHEIRO/CARTAO/PIX"
-        string   banco
-        int      quantidade_parcelas
-        date     data_vencimento
-        boolean  debitado
+        int id PK
+        date data_movimento
+        int tipo_movimento_id FK
+        string descricao
+        number valor
+        string forma_pagamento
+        string banco
+        int quantidade_parcelas
+        date data_vencimento
+        string debitado
     }
 ```
 
@@ -196,15 +190,15 @@ flowchart TD
     B -->|Receita| D[Lista tipos de Receita]
     C --> E[Escolha tipo por ID]
     D --> E
-    E --> F[Descricao + Valor]
+    E --> F[Descricao e Valor]
     F --> G{Forma de pagamento}
-    G -->|Cartao| H[Banco, parcelas,<br/>vencimento, status]
+    G -->|Cartao| H["Banco, parcelas, vencimento, status"]
     G -->|Pix| I[Banco - a vista]
-    G -->|Dinheiro| J[a vista]
+    G -->|Dinheiro| J[A vista]
     H --> K[Service.validar]
     I --> K
     J --> K
-    K --> L[DAO.inserir / atualizar]
+    K --> L[DAO.inserir ou atualizar]
     L --> M([OK])
 ```
 
